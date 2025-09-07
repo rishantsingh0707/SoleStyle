@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Item</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/edit-item.css">
+</head>
+<style>
+    /* Adding gradient background and beautiful styling for edit item page */
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .edit-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 80px);
+        padding: 2rem;
+    }
+
+    .edit-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        max-width: 600px;
+        width: 100%;
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .edit-title {
+        text-align: center;
+        color: #4c1d95;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .edit-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #4c1d95;
+        font-size: 1rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 1rem;
+        border: 2px solid rgba(102, 126, 234, 0.2);
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .current-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .image-preview {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .image-preview:hover {
+        transform: scale(1.05);
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .no-images {
+        color: #6b7280;
+        font-style: italic;
+        text-align: center;
+        padding: 2rem;
+        background: rgba(243, 244, 246, 0.5);
+        border-radius: 12px;
+        border: 2px dashed rgba(156, 163, 175, 0.5);
+    }
+
+    .file-upload {
+        position: relative;
+    }
+
+    .file-upload input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .file-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        border: 2px dashed rgba(102, 126, 234, 0.4);
+        border-radius: 12px;
+        background: rgba(102, 126, 234, 0.05);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #667eea;
+        font-weight: 600;
+    }
+
+    .file-label:hover {
+        border-color: #667eea;
+        background: rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-top: 1rem;
+        font-weight: 500;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .alert-danger {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .alert-success {
+        background: rgba(34, 197, 94, 0.1);
+        color: #16a34a;
+        border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .edit-container {
+            padding: 1rem;
+        }
+
+        .edit-card {
+            padding: 2rem;
+        }
+
+        .edit-title {
+            font-size: 2rem;
+        }
+
+        .current-images {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        }
+    }
+</style>
+
+<body>
+    <%- include('navbar') %>
+
+        <div class="edit-container">
+            <div class="edit-card">
+                <h2 class="edit-title">Edit Item</h2>
+
+                <form action="/items/edit/<%= item._id %>?_method=PATCH" method="POST" enctype="multipart/form-data"
+                    class="edit-form">
+                    <div class="form-group">
+                        <label for="name">Item Name</label>
+                        <input type="text" name="name" id="name" value="<%= item.name %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" name="price" id="price" value="<%= item.price %>" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" name="category" id="category" value="<%= item.category %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" required><%= item.description %></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Images:</label>
+                        <div class="current-images">
+                            <% if (item.imageUrl && item.imageUrl.length> 0) { %>
+                                <% item.imageUrl.forEach(img=> { %>
+                                    <div class="image-preview">
+                                        <img src="<%= img %>" alt="Current image">
+                                    </div>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <p class="no-images">No images uploaded</p>
+                                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="images">Replace Images (optional):</label>
+                        <div class="file-upload">
+                            <input type="file" name="images" id="images" multiple accept="image/*">
+                            <label for="images" class="file-label">
+                                <span>Choose new images</span>
+                            </label>
+                            <div id="preview" class="preview-container"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Update Item</button>
+                </form>
+
+                <% if (error && error.length> 0) { %>
+                    <div class="alert alert-danger">
+                        <%= error[0] %>
+                    </div>
+                    <% } %>
+
+                        <% if (success && success.length> 0) { %>
+                            <div class="alert alert-success">
+                                <%= success[0] %>
+                            </div>
+                            <% } %>
+            </div>
+        </div>
+
+
+        <script>
+            document.getElementById("images").addEventListener("change", function (event) {
+                const preview = document.getElementById("preview");
+                preview.innerHTML = "";
+
+                Array.from(event.target.files).forEach(file => {
+                    if (file.type.startsWith("image/")) {
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            const img = document.createElement("img");
+                            img.src = e.target.result;
+                            img.style.maxWidth = "150px";
+                            img.style.margin = "5px";
+                            preview.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+        </script>
+
+</body>
+
+</html>

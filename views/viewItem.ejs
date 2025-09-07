@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details - SoleStyle</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/creative-signup.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+<style>
+    /* Item Details Page Styling */
+    :root {
+        --primary-rose: #be123c;
+        --accent-pink: #ec4899;
+        --soft-rose: #fdf2f8;
+        --warm-gray: #f8fafc;
+        --text-dark: #1f2937;
+        --text-light: #6b7280;
+        --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+
+    }
+
+    /* Background Elements */
+    body {
+        position: relative;
+        background: var(--background-gradient);
+        min-height: 100vh;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Floating Background Elements */
+    body::before,
+    body::after {
+        content: "";
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.1;
+    }
+
+    body::before {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, var(--primary-rose), var(--accent-pink));
+        top: 10%;
+        right: -150px;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    body::after {
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, var(--accent-pink), #f472b6);
+        bottom: 20%;
+        left: -100px;
+        animation: float 8s ease-in-out infinite reverse;
+    }
+
+    /* Additional floating elements */
+    .bg-decoration {
+        position: fixed;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .bg-decoration:nth-child(1) {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, rgba(190, 18, 60, 0.1), rgba(236, 72, 153, 0.1));
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        top: 30%;
+        right: 10%;
+        animation: morph 10s ease-in-out infinite;
+    }
+
+    .bg-decoration:nth-child(2) {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(244, 114, 182, 0.1));
+        border-radius: 50%;
+        bottom: 40%;
+        left: 15%;
+        animation: float 7s ease-in-out infinite;
+    }
+
+    /* Container Styling */
+    .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    /* Card Styling */
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 24px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: slideUp 0.8s ease-out;
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.15), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 3rem;
+        position: relative;
+    }
+
+    /* Typography */
+    .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary-rose), var(--accent-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .card-subtitle {
+        font-family: "Source Sans Pro", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--primary-rose);
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .card-subtitle::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-rose), var(--accent-pink));
+        border-radius: 2px;
+    }
+
+    /* Description and Category */
+    .card-body p {
+        font-family: "Source Sans Pro", sans-serif;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+    .text-muted {
+        color: var(--text-light) !important;
+        font-style: italic;
+    }
+
+    /* Image Gallery */
+    .mb-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background: rgba(253, 242, 248, 0.3);
+        border-radius: 16px;
+        border: 1px solid rgba(190, 18, 60, 0.1);
+    }
+
+    .mb-3 img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .mb-3 img:hover {
+        transform: scale(1.05) rotate(1deg);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Add to Cart Button */
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-rose), var(--accent-pink));
+        border: none;
+        color: white;
+        font-family: "Source Sans Pro", sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 2rem;
+    }
+
+    .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(190, 18, 60, 0.4);
+    }
+
+    .btn-primary:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+
+    /* Alert Messages */
+    .alert {
+        border: none;
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-top: 1.5rem;
+        font-family: "Source Sans Pro", sans-serif;
+        font-weight: 500;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        color: #dc2626;
+        border-left: 4px solid #dc2626;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        color: #16a34a;
+        border-left: 4px solid #16a34a;
+    }
+
+    /* Animations */
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+    }
+
+    @keyframes morph {
+
+        0%,
+        100% {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            transform: rotate(0deg);
+        }
+
+        50% {
+            border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+            transform: rotate(180deg);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+
+        .card-body {
+            padding: 2rem 1.5rem;
+        }
+
+        .card-title {
+            font-size: 2rem;
+        }
+
+        .card-subtitle {
+            font-size: 1.5rem;
+        }
+
+        .mb-3 {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        body::before,
+        body::after {
+            display: none;
+        }
+    }
+
+    /* Add background decoration elements */
+    .bg-decoration:nth-child(3) {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(45deg, rgba(190, 18, 60, 0.08), rgba(236, 72, 153, 0.08));
+        border-radius: 50%;
+        top: 60%;
+        right: 5%;
+        animation: float 9s ease-in-out infinite;
+    }
+
+    .bg-decoration:nth-child(4) {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, rgba(236, 72, 153, 0.06), rgba(244, 114, 182, 0.06));
+        border-radius: 20% 80% 80% 20% / 20% 20% 80% 80%;
+        top: 80%;
+        left: 5%;
+        animation: morph 12s ease-in-out infinite;
+    }
+</style>
+
+<body>
+    <!-- Added floating background decoration elements -->
+    <div class="bg-decoration"></div>
+    <div class="bg-decoration"></div>
+    <div class="bg-decoration"></div>
+    <div class="bg-decoration"></div>
+
+    <!-- Added reusable navbar component -->
+    <%- include('navbar') %>
+
+        <div class="container mt-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <%= item.name %>
+                    </h3>
+                    <h5 class="card-subtitle text-muted">₹<%= item.price %>
+                    </h5>
+                    <p class="mt-2">
+                        <%= item.description || "No description" %>
+                    </p>
+                    <p>
+                        <small class="text-muted">Category: <%= item.category %></small>
+                    </p>
+
+                    <% if (item.imageUrl && item.imageUrl.length> 0) { %>
+                        <div class="mb-3">
+                            <% item.imageUrl.forEach(img=> { %>
+                                <img src="<%= img %>" width="200" style="margin:5px;" alt="Item Image">
+                                <% }) %>
+                        </div>
+                        <% } else { %>
+                            <p class="text-muted">No images uploaded.</p>
+                            <% } %>
+                                <!-- Add Cart Button -->
+                                <form action="/cart/add/<%= item._id %>" method="POST">
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form>
+
+                                <% if (error && error.length> 0) { %>
+                                    <div class="alert alert-danger">
+                                        <%= error[0] %>
+                                    </div>
+                                    <% } %>
+
+                                        <% if (success && success.length> 0) { %>
+                                            <div class="alert alert-success">
+                                                <%= success[0] %>
+                                            </div>
+                                            <% } %>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

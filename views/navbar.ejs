@@ -1,0 +1,324 @@
+<style>
+    /* Navbar Styles */
+    .navbar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-color: rgba(102, 126, 234, 0.4);
+        /* semi-transparent layering */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 20px rgba(190, 18, 60, 0.15);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        margin-bottom: 1.5rem;
+        /* adds spacing below */
+
+    }
+
+    .navbar-container {
+        max-width: 2000px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between !important;
+        height: 70px;
+        flex: 1;
+    }
+
+    /* Brand Styles */
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+    }
+
+    .brand-link {
+        text-decoration: none;
+        color: white;
+        font-weight: 700;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .brand-name {
+        background: linear-gradient(45deg, #ffffff, #fecaca);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-family: "Playfair Display", serif;
+        letter-spacing: -0.5px;
+    }
+
+    .brand-link:hover {
+        transform: scale(1.05);
+    }
+
+    /* Navigation Menu */
+    .navbar-menu {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    /* User Menu */
+    .user-menu {
+        position: relative;
+    }
+
+    .user-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.75rem 1rem;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .user-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .user-name {
+        font-size: 0.9rem;
+    }
+
+    .dropdown-icon {
+        width: 16px;
+        height: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    .user-button:hover .dropdown-icon {
+        transform: rotate(180deg);
+    }
+
+    /* Dropdown Menu */
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem 1.25rem;
+        color: #374151;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
+
+    .dropdown-item:hover {
+        background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        color: #be123c;
+    }
+
+    .dropdown-item.logout:hover {
+        background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        color: #dc2626;
+    }
+
+    .dropdown-item-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+        margin: 0.5rem 0;
+    }
+
+    /* Auth Buttons */
+    .auth-buttons {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #ffffff, #f8fafc);
+        color: #be123c;
+        border: 2px solid transparent;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .navbar-container {
+            padding: 0 1rem;
+            height: 60px;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+        }
+
+        .user-name {
+            display: none;
+        }
+
+        .auth-buttons {
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            font-size: 0.8rem;
+        }
+
+        .dropdown-menu {
+            right: -10px;
+            min-width: 180px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .navbar-container {
+            padding: 0 0.75rem;
+        }
+
+        .dropdown-menu {
+            right: -20px;
+            left: auto;
+            min-width: 160px;
+        }
+    }
+</style>
+<nav class="navbar">
+    <div class="navbar-container">
+        <!-- Company Logo/Name -->
+        <div class="navbar-brand">
+            <a href="/" class="brand-link">
+                <span class="brand-name">SoleStyle</span>
+            </a>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="navbar-menu">
+            <% if (user) { %>
+                <!-- Logged in user -->
+                <div class="user-menu">
+                    <button class="user-button" onclick="toggleDropdown()">
+                        <span class="user-name">Hello, <%= user.name %></span>
+                        <svg class="dropdown-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="/cart" class="dropdown-item">
+                            <svg class="dropdown-item-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path
+                                    d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                            </svg>
+                            View Cart
+                        </a>
+                        <a href="/items" class="dropdown-item">
+                            <svg class="dropdown-item-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Add Item
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/auth/logout" class="dropdown-item logout">
+                            <svg class="dropdown-item-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                <% } else { %>
+                    <!-- Not logged in -->
+                    <div class="auth-buttons">
+                        <a href="/auth/signin" class="btn btn-outline">Login</a>
+                        <a href="/auth/signup" class="btn btn-primary">Sign Up</a>
+                    </div>
+                    <% } %>
+        </div>
+    </div>
+</nav>
+
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (event) {
+        const userMenu = document.querySelector('.user-menu');
+        const dropdown = document.getElementById('userDropdown');
+
+        if (!userMenu.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+</script>
