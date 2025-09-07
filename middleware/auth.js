@@ -4,7 +4,8 @@ export const checkForAuthenticationCookies = (req, res, next) => {
   const token = req.cookies.token;
   if (!token){
     console.log("No token provided, redirecting to signin");
-    return res.status(401).json({ error: "No token provided" });
+    req.flash("Error","No token Provided")
+    return res.redirect("/")
   };
 
   try {
@@ -12,7 +13,8 @@ export const checkForAuthenticationCookies = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ error: "Invalid token" });
+    req.flash("Error","Invalid Token")
+    res.redirect("/");
   }
 };
 

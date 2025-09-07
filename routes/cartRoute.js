@@ -10,10 +10,10 @@ router.get("/", async (req, res) => {
     if (!cart) cart = { items: [] };
     res.render("cart", { user: req.user, cart: cart.items });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    req.flash("Error", "Cannot view Your cart")
+    return res.render("/")
   }
 });
-
 
 // ✅ Add item to cart
 router.post("/add/:itemId", async (req, res) => {
@@ -32,9 +32,10 @@ router.post("/add/:itemId", async (req, res) => {
 
     await cart.save();
     req.flash("success", "Item added to cart");
-    res.redirect("/cart");
+    res.redirect("/");
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    req.flash("Somethis bad happend")
+    res.redirect("/")
   }
 });
 
@@ -49,7 +50,8 @@ router.delete("/delete/:itemId", async (req, res) => {
     req.flash("success", "Item removed from cart");
     res.redirect("/cart");
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    req.flash("Something bad happend")
+    res.redirect("/")
   }
 });
 
@@ -67,7 +69,8 @@ router.post("/update/:itemId", async (req, res) => {
     req.flash("success", "Cart updated");
     res.redirect("/cart");
   } catch (err) {
-    res.status(500).json({ error: err.message });
+      req.flash("Error!")
+      return res.render("/")
   }
 });
 

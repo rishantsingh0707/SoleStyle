@@ -31,7 +31,8 @@ router.post("/", upload.array("images", 5), async (req, res) => {
     req.flash("success", "Item added successfully");
     res.redirect("/");
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    req.flash("Somethis bad happend")
+    res.redirect("/");
   }
 });
 
@@ -40,7 +41,10 @@ router.post("/", upload.array("images", 5), async (req, res) => {
 router.get("/view/:id", async (req, res) => {
   try {
     const item = await Item.findById(req.params.id).populate("createdBy", "_id name email");
-    if (!item) return res.status(404).json({ error: "Item not found" });
+    if (!item) {
+      req.flash("Item not found")
+      return res.redirect("/")
+    }
     res.render("viewItem", {
       item,
       user: req.user ? { ...req.user, _id: req?.user?._id?.toString() } : null,
@@ -48,8 +52,8 @@ router.get("/view/:id", async (req, res) => {
     });
     console.log("Viewing item:", item);
   } catch (err) {
-    console.log("Error fetching item:", err);
-    res.status(500).json({ error: err.message });
+    req.flash("error", "Error 404!")
+    return res.redirect("/")
   }
 });
 
@@ -57,18 +61,25 @@ router.get("/view/:id", async (req, res) => {
 router.get("/edit/:id", async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
-    if (!item) return res.status(404).send("Item not found");
+    if (!item) {
+      req.flash("Item not found")
+      return res.render("/")
+    }
 
     res.render("editItem", { item, user: req.user });
   } catch (err) {
-    res.status(500).send(err.message);
+    req.flash("Errot", "Something went Wrong!")
+    res.redirect("/")
   }
 });
 
 router.patch("/edit/:id", upload.array("images", 5), async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
-    if (!item) return res.status(404).send("Item not found");
+    if (!item) {
+      req.flash("Item not found")
+      return res.render("/")
+    }
 
     item.name = req.body.name;
     item.price = req.body.price;
@@ -84,7 +95,8 @@ router.patch("/edit/:id", upload.array("images", 5), async (req, res) => {
     req.flash("success", "Item updated successfully");
     res.redirect("/");
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    req.flash("Error","Cannot edit")
+    res.redirect("/")
   }
 });
 
@@ -93,18 +105,22 @@ router.patch("/edit/:id", upload.array("images", 5), async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
-    if (!item) return res.status(404).json({ error: "Item not found" });
+    if (!item) {
+      req.flash("Item not found")
+      return res.render("/")
+    }
 
     if (item.createdBy.toString() !== req.user.id) {
-      return res.status(403).json({ error: "Not authorized" });
+      req.flash("Not Authenticated")
+      return res.render("/")
     }
 
     await item.deleteOne();
     req.flash("success", "Item deleted successfully");
-    res.redirect('/'); 
+    res.redirect('/');
   } catch (err) {
     req.flash("error", "Error deleting item: " + err.message);
-    res.status(500).json({ error: err.message });
+    res.redirect("/")
   }
 });
 
